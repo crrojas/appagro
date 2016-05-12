@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Navegador Agrícola</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      #map {
+        width: 700px;
+        height: 500px;}
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Navegador Agrícola</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Inicio <span class="sr-only">(current)</span></a></li>
+            <li role="presentation" class="dropdown">
+              <a  class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Imprimir <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Imagen PNG</a></li>
+                <li><a href="#">Imagen JPG</a></li>
+                <li><a href="#">Documento PDF</a></li>
+              </ul>
+            </li>
+
+            <li><a href="#">Mapas</a></li>
+            <li role="presentation" class="dropdown">
+              <a  class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Datos <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a id="a_datos" href="#"><div class="checkbox" style="margin-left: 5px;"><label><input type="checkbox">Principales viñedos</label></div></a></li>
+                <li><a href="#"><div class="checkbox" style="margin-left: 5px;"><label><input type="checkbox">Laboratorios</label></div></a></li>
+                <li><a href="#"><div class="checkbox" style="margin-left: 5px;"><label><input type="checkbox">Cooperativas agrícolas</label></div></a></li>
+                <li><a href="#"><div class="checkbox" style="margin-left: 5px;"><label><input type="checkbox">Lugares de embalaje de fruta fresca</label></div></a></li>
+              </ul>
+            </li>
+             <li role="presentation" class="dropdown">
+              <a  class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Compartir <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Correo electrónico</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Facebook</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Twitter</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Guardar</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="Buscar región o provincia" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              Buscar
+            </button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <div class="container" style="margin-top: 75px;">
+      <div class="row">
+        <div class="col-md-3">
+          <form class="form-horizontal">
+          <h3>Zonificación productiva para Frutales</h3>
+          <ul class="list-group" style="max-height: 400px; overflow-y:scroll;">
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Todos</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Almendro</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Arándano americano</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Avellano</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Caqui</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Castaño</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Cerezo</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Chirimoyo</label></div></li>
+            <li class="list-group-item"><div class="checkbox"><label><input type="checkbox" checked>Ciruelo Europeo</label></div></li>
+          </ul>
+          <div>
+            <a class="btn btn-primary" href="#" role="button"> Filtrar por cultivo</a>
+          </div>
+          </form>
+        </div>
+        <div class="col-md-9">
+          <div align="center">
+            <div class="row"> <label for="year">Seleccione el año:</label> </div>
+              <div class="row">
+              <div class="col-md-2">1990</div>
+              <div class="col-md-8">
+                <input id="year" name="year" type="range" min="1990" max="2020" value="2015">
+              </div>
+              <div class="col-md-2">2020</div>
+              </div>
+          </div>
+          <div align="center">
+            <div id="map" style="max-width: 700px; margin-top: 5px;" />
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="chartjs/Chart.js"></script>
+
+    <script type="text/javascript">
+
+      // Creamos el mapa 
+      window.initMap = function() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: {lat: -33.447487, lng: -70.673676},  // Está centrado en Santiago
+          //mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+
+        // Esta función imprime en la consola (ctrl + shift + i en chrome para mostrar)  la latitud y longitud
+        // Útil para obtener las coordenadas de los polígonos
+        map.addListener('click', function(e) {
+          console.log("lat:" + e.latLng.lat() + "lng:" + e.latLng.lng());
+        });
+        
+        // Para definir nuevos polígonos se crea una variable con coordenadas lat, lng
+        // No es necesario cerrar un polígno, esto lo hace google maps, asume que el último punto se une al primero
+        var poly1_coords = [
+          {lat: -33.285767970425375, lng: -70.55007934570312},
+          {lat: -33.23753890712157, lng: -70.48416137695312},
+          {lat: -33.29724715520414, lng: -70.39901733398438},
+          {lat: -33.36953127791291, lng: -70.44158935546875},
+        ];
+
+        // Luego se instancia la clase Polygon y se le pasan las coords y se asignan sus propiedades
+        var poly_1 = new google.maps.Polygon({
+          paths: poly1_coords,
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35
+        });
+
+        // Acá otro polígono
+        var poly2_coords = [
+          {lat: -33.286915956862074, lng: -70.55419921875},
+          {lat: -33.260508448729944, lng: -70.73959350585938},
+          {lat: -33.16399582256238, lng: -70.46630859375},
+          {lat: -33.23524162094684, lng: -70.48553466796875}];
+
+
+        var poly_2 = new google.maps.Polygon({
+          paths: poly2_coords,
+          strokeColor: '#00FF00',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: '#00FF00',
+          fillOpacity: 0.35
+        });
+
+        // Si el desarrollo es con google maps solo se necesita guardar esta información en una Base de datos
+        // con soporte GIS.
+        var poly3_coords = [
+          {lat: -33.26510163254821, lng: -70.73684692382812},
+          {lat: -33.31561070918829, lng: -70.6915283203125},
+          {lat: -33.38673294052009, lng: -70.72998046875},
+          {lat: -33.40163829558249, lng: -70.68878173828125},
+          {lat: -33.40622404437544, lng: -70.60775756835938},
+          {lat: -33.46237981784357, lng: -70.5816650390625},
+          {lat: -33.43029525395318, lng: -70.4937744140625},
+          {lat: -33.40278475547239, lng: -70.49652099609375},
+          {lat: -33.37411872061922, lng: -70.44708251953125},
+          {lat: -33.29150775159363, lng: -70.55419921875}];
+
+        var poly_3 = new google.maps.Polygon({
+          paths: poly3_coords,
+          strokeColor: '#0000FF',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: '#0000FF',
+          fillOpacity: 0.35
+        });
+
+        // Se colocan los polígonos en el mapa
+        poly_1.setMap(map);
+        poly_2.setMap(map);
+        poly_3.setMap(map);
+
+
+        // Ahora creamos los popup que aparecen al hacer click en cada polígono
+        var infowindow_1 = new google.maps.InfoWindow({
+          content: "<canvas id='chart_1' width='300px' height='300px'></canvas>"
+        });
+
+        // Asignamos el listener para el evento click y lanzamos el popup
+        google.maps.event.addListener(poly_1, 'click', function (event) {
+          infowindow_1.setPosition(event.latLng);
+          infowindow_1.open(map);
+          // Esta función es la que crea el gráfico
+          make_chart1();
+        });
+        // Esto lo repetimos para cada polígono
+        var infowindow_2 = new google.maps.InfoWindow({
+          content: "<canvas id='chart_2' width='300px' height='300px'></canvas>"
+        });
+
+        google.maps.event.addListener(poly_2, 'click', function (event) {
+          infowindow_2.setPosition(event.latLng);
+          infowindow_2.open(map);
+          make_chart2();
+        });
+
+        var infowindow_3 = new google.maps.InfoWindow({
+          content: "<canvas id='chart_3' width='300px' height='300px'></canvas>"
+        });
+
+        google.maps.event.addListener(poly_3, 'click', function (event) {
+          infowindow_3.setPosition(event.latLng);
+          infowindow_3.open(map);
+          make_chart3();
+        });
+
+      }
+    </script>
+
+    <script type="text/javascript">
+      // Scripts para los gráficos
+      function make_chart1(){
+        var ctx_1 = document.getElementById("chart_1");
+        var chart_1 = new Chart(ctx_1, {
+          type: 'bar',
+          data: {
+              labels: ["Ciruelo", "Avellano", "Almendro", "Caqui", "Castaño", "Cerezo"],
+              datasets: [{
+                  label: 'ha por tipo cultivo',
+                  data: [12, 19, 3, 5, 2, 3],
+                  backgroundColor: '#FF0000',
+              }]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero:true
+                      }
+                  }]
+              }
+          }
+        });
+      }
+
+      function make_chart2(){
+        var ctx_2 = document.getElementById("chart_2");
+        var data = {
+            labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
+            datasets: [
+                {
+                    label: "Evolución precio de venta",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                }
+            ]
+        };
+        var chart_2 = new Chart(ctx_2, {
+            type: 'line',
+            data: data,
+            options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero:true
+                      }
+                  }]
+              }
+          }
+        });
+      }
+
+
+      function make_chart3(){
+
+        var data = {
+            labels: ["Cerezo", "Almendro", "Castaño", "Caqui", "Ciruelo", "Chirimoyo", "Avellano"],
+            datasets: [
+                {
+                    label: "Ventas por cultivo",
+                    backgroundColor: "rgba(179,181,198,0.2)",
+                    borderColor: "rgba(179,181,198,1)",
+                    pointBackgroundColor: "rgba(179,181,198,1)",
+                    pointBorderColor: "#fff",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(179,181,198,1)",
+                    data: [65, 59, 90, 81, 56, 55, 40]
+                },
+                {
+                    label: "Superficie por cultivo",
+                    backgroundColor: "rgba(255,99,132,0.2)",
+                    borderColor: "rgba(255,99,132,1)",
+                    pointBackgroundColor: "rgba(255,99,132,1)",
+                    pointBorderColor: "#fff",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(255,99,132,1)",
+                    data: [28, 48, 40, 19, 96, 27, 100]
+                }
+            ]
+        };
+        var ctx_3 = document.getElementById("chart_3");
+        var myRadarChart = new Chart(ctx_3, {
+          type: 'radar',
+          data: data,
+          // options: options
+        });
+      }
+
+    </script>
+
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV4jzFH-Zz0Rf8uXQwRuxnh64mgklhPY4&callback=initMap">
+    </script>
+
+  </body>
+</html>
